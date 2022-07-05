@@ -552,6 +552,10 @@ def array_to_image(arr, color=False):
         img_shape = arr.shape[-2:]
         batch = sp.prod(arr.shape[:-2])
         mshape = mosaic_shape(batch)
+        
+        # JWP edit: 2022-06-15:
+        # mshape = (1,batch) # force 1xN_slice montage instead of autoshape
+        # JWP edit end.
 
     if sp.prod(mshape) == batch:
         img = arr.reshape((batch, ) + img_shape)

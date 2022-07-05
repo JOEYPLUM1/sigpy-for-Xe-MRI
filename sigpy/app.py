@@ -126,6 +126,7 @@ class MaxEig(App):
             self.pbar.set_postfix(max_eig='{0:.2E}'.format(self.alg.max_eig))
 
     def _output(self):
+        print('Maximum eigenvalue estimated: %.2e' % (self.alg.max_eig)) # JWP 20220704 - add statement to show max eigenvalue.
         return self.alg.max_eig
 
 
