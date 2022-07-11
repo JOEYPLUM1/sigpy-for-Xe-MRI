@@ -445,3 +445,15 @@ def xpay(y, a, x):
     """
     y *= a
     y += x
+
+
+def aty(y, a, x):
+    """Compute y = a * x * y.
+
+    Args:
+        y (array): Output array.
+        a (scalar or array): Input scalar.
+        x (array): Input array.
+
+    """
+    y *= a * x

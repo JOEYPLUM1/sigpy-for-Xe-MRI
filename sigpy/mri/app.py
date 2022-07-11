@@ -26,7 +26,7 @@ class SenseRecon(sp.app.LinearLeastSquares):
 
     .. math::
         \min_x \frac{1}{2} \| P F S x - y \|_2^2 +
-        \frac{\lambda}{2} \| x \|_2^2
+        \frac{\lambda}{2} \| R x \|_2^2
 
     where P is the sampling operator, F is the Fourier transform operator,
     S is the SENSE operator, x is the image, and y is the k-space measurements.
@@ -36,6 +36,7 @@ class SenseRecon(sp.app.LinearLeastSquares):
         mps (array): sensitivity maps.
         lamda (float): regularization parameter.
         weights (float or array): weights for data consistency.
+        R (array): regularization map for reconstructed solution.
         tseg (None or Dictionary): parameters for time-segmented off-resonance
             correction. Parameters are 'b0' (array), 'dt' (float),
             'lseg' (int), and 'n_bins' (int). Lseg is the number of
@@ -61,7 +62,7 @@ class SenseRecon(sp.app.LinearLeastSquares):
 
     def __init__(self, y, mps, lamda=0, weights=None, tseg=None,
                  coord=None, device=sp.cpu_device, coil_batch_size=None,
-                 comm=None, show_pbar=True, transp_nufft=False, **kwargs):
+                 comm=None, show_pbar=True, transp_nufft=False, R=None, **kwargs):
         weights = _estimate_weights(y, weights, coord)
         if weights is not None:
             y = sp.to_device(y * weights**0.5, device=device)
@@ -75,7 +76,7 @@ class SenseRecon(sp.app.LinearLeastSquares):
         if comm is not None:
             show_pbar = show_pbar and comm.rank == 0
 
-        super().__init__(A, y, lamda=lamda, show_pbar=show_pbar, **kwargs)
+        super().__init__(A, y, lamda=lamda, R=R, show_pbar=show_pbar, **kwargs)
 
 
 class L1WaveletRecon(sp.app.LinearLeastSquares):

@@ -137,7 +137,7 @@ class LinearLeastSquares(App):
 
     .. math::
         \min_x \frac{1}{2} \| A x - y \|_2^2 + g(G x) +
-        \frac{\lambda}{2} \| x - z \|_2^2
+        \frac{\lambda}{2} \| R x - z \|_2^2
 
     Four solvers can be used: :class:`sigpy.alg.ConjugateGradient`,
     :class:`sigpy.alg.GradientMethod`, :class:`sigpy.alg.ADMM`,
@@ -156,6 +156,7 @@ class LinearLeastSquares(App):
         g (None or function): Regularization function.
             Only used for when `save_objective_values` is true.
         G (None or Linop): Regularization linear operator.
+        R (array): Regularization map for reconstructed solution.
         z (float or array): Bias for l2 regularization.
         solver (str): {`'ConjugateGradient'`, `'GradientMethod'`,
             `'PrimalDualHybridGradient'`, `'ADMM'`}.
@@ -176,7 +177,7 @@ class LinearLeastSquares(App):
 
     """
     def __init__(self, A, y, x=None, proxg=None,
-                 lamda=0, G=None, g=None, z=None,
+                 lamda=0, G=None, g=None, R=None, z=None,
                  solver=None, max_iter=100,
                  P=None, alpha=None, max_power_iter=30, accelerate=True,
                  tau=None, sigma=None,
@@ -190,6 +191,7 @@ class LinearLeastSquares(App):
         self.lamda = lamda
         self.G = G
         self.g = g
+        self.R = R
         self.z = z
         self.solver = solver
         self.max_iter = max_iter
@@ -268,6 +270,8 @@ class LinearLeastSquares(App):
 
         if self.lamda != 0:
             AHA += self.lamda * I
+            if self.R is not None:
+                util.aty(AHy, self.lamda, self.R)
             if self.z is not None:
                 util.axpy(AHy, self.lamda, self.z)
 
