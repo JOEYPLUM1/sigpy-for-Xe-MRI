@@ -36,7 +36,7 @@ class SenseRecon(sp.app.LinearLeastSquares):
         mps (array): sensitivity maps.
         lamda (float): regularization parameter.
         weights (float or array): weights for data consistency.
-        R (array): regularization map for reconstructed solution.
+        R (array): regularization map to constrain solution.
         tseg (None or Dictionary): parameters for time-segmented off-resonance
             correction. Parameters are 'b0' (array), 'dt' (float),
             'lseg' (int), and 'n_bins' (int). Lseg is the number of

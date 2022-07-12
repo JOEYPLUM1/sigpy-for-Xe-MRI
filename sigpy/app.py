@@ -156,7 +156,7 @@ class LinearLeastSquares(App):
         g (None or function): Regularization function.
             Only used for when `save_objective_values` is true.
         G (None or Linop): Regularization linear operator.
-        R (array): Regularization map for reconstructed solution.
+        R (array): Regularization map to constrain solution.
         z (float or array): Bias for l2 regularization.
         solver (str): {`'ConjugateGradient'`, `'GradientMethod'`,
             `'PrimalDualHybridGradient'`, `'ADMM'`}.
