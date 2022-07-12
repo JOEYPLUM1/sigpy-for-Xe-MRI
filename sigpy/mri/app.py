@@ -72,6 +72,8 @@ class SenseRecon(sp.app.LinearLeastSquares):
         A = linop.Sense(mps, coord=coord, weights=weights, tseg=tseg,
                         coil_batch_size=coil_batch_size, comm=comm,
                         transp_nufft=transp_nufft)
+        if R is not None:
+            R = sp.to_device(R, device=device)
 
         if comm is not None:
             show_pbar = show_pbar and comm.rank == 0
